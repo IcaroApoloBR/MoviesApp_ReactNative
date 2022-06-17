@@ -18,17 +18,20 @@ import Header from '../../components/Header';
 import SliderItem from '../../components/SliderItem';
 
 import api, { key } from '../../services/api';
-import { getListMovies } from '../../utils/movie';
+import { getListMovies, randomBanner } from '../../utils/movie';
 
 function Home() {
 
     const [nowMovies, setNowMovies] = useState([]);
     const [popularMovies, setPopularMovies] = useState([]);
     const [topMovies, setTopMovies] = useState([]);
+    const [bannerMovie, setBannerMovie] = useState({});
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         let isActive = true;
+        const ac = new AbortController();
 
         async function getMovies() {
             const [nowData, popularData, topData] = await Promise.all([
@@ -55,17 +58,26 @@ function Home() {
                 }),
             ])
 
-            const nowList = getListMovies(10, nowData.data.results);
-            const popularList = getListMovies(10, popularData.data.results);
-            const topList = getListMovies(10, topData.data.results);
+            if (isActive) {
+                const nowList = getListMovies(10, nowData.data.results);
+                const popularList = getListMovies(10, popularData.data.results);
+                const topList = getListMovies(10, topData.data.results);
 
-            setNowMovies(nowList);
-            setPopularMovies(popularList);
-            setTopMovies(topList);
-            setLoading(false);
+                setBannerMovie(nowData.data.results[randomBanner(nowData.data.results)]);
+                setNowMovies(nowList);
+                setPopularMovies(popularList);
+                setTopMovies(topList);
+                setLoading(false);
+            }
+
         }
 
         getMovies();
+
+        return () => {
+            isActive = false;
+            ac.abort();
+        }
 
     }, [])
 
@@ -96,7 +108,7 @@ function Home() {
                 <BannerButton activeOpacity={0.8} onPress={() => alert('Teste')}>
                     <Banner
                         resizeMethod="resize"
-                        source={{ uri: 'https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80' }}
+                        source={{ uri: `https://image.tmdb.org/t/p/original/${bannerMovie.poster_path}` }}
                     />
                 </BannerButton>
 
