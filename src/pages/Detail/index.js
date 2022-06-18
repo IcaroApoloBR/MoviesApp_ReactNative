@@ -8,8 +8,11 @@ import {
     Title,
     ContentArea,
     Rate,
-    ListGenres
+    ListGenres,
+    Description
 } from './styles';
+
+import { ScrollView, Modal } from 'react-native';
 
 import { Feather, Ionicons } from '@expo/vector-icons';
 
@@ -19,12 +22,14 @@ import api, { key } from '../../services/api';
 import Stars from 'react-native-stars';
 
 import Genres from '../../components/Genres';
+import ModalLink from '../../components/ModalLink';
 
 function Detail() {
     const navigation = useNavigation();
     const route = useRoute();
 
     const [movie, setMovie] = useState({});
+    const [openLink, setOpenLink] = useState(false);
 
     useEffect(() => {
         let isActive = true;
@@ -81,7 +86,7 @@ function Detail() {
                 source={{ uri: `https://image.tmdb.org/t/p/original/${movie.poster_path}` }}
             />
 
-            <ButtonLink>
+            <ButtonLink onPress={() => setOpenLink(true)} >
                 <Feather name="link" size={24} color="#FFF" />
             </ButtonLink>
 
@@ -108,6 +113,21 @@ function Detail() {
                 keyExtractor={(item) => String(item.id)}
                 renderItem={({ item }) => <Genres data={item} />}
             />
+
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <Title>Descrição</Title>
+                <Description>
+                    {movie?.overview}
+                </Description>
+            </ScrollView>
+
+            <Modal animationType="slide" transparent={true} visible={openLink}>
+                <ModalLink
+                    link={movie?.homepage}
+                    title={movie?.title}
+                    closeModal={() => setOpenLink(false)}
+                />
+            </Modal>
 
         </Container>
     )
