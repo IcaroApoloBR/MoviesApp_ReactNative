@@ -28,6 +28,7 @@ function Home() {
     const [popularMovies, setPopularMovies] = useState([]);
     const [topMovies, setTopMovies] = useState([]);
     const [bannerMovie, setBannerMovie] = useState({});
+    const [input, setInput] = useState('');
 
     const [loading, setLoading] = useState(true);
 
@@ -86,7 +87,16 @@ function Home() {
     }, [])
 
     function navigateDetailsPage(item) {
-        navigation.navigate('Detail', {id: item.id })
+        navigation.navigate('Detail', { id: item.id })
+    }
+
+    function handleSearchMovie() {
+
+        if (input === '') return;
+
+        navigation.navigate('Search', { name: input })
+
+        setInput('');
     }
 
     if (loading) {
@@ -100,13 +110,15 @@ function Home() {
     return (
         <Container>
 
-            <Header title="React Prime Video" />
+            <Header title="ReactFlix" />
             <SearchContainer>
                 <Input
-                    placeholder="Ex Transformers"
+                    placeholder="Insira o nome de um Filme"
                     placeholderTextColor="#DDD"
+                    value={input}
+                    onChangeText={(text) => setInput(text)}
                 />
-                <SearchButton>
+                <SearchButton onPress={(handleSearchMovie)}>
                     <Feather name="search" size={30} color="#FFF" />
                 </SearchButton>
             </SearchContainer>
