@@ -29,7 +29,7 @@ export const ActionContainer = styled.View`
 export const DetailButton = styled.TouchableOpacity`
     width: 85%;
     height: 30px;
-    background-color: #e72f49;
+    background-color: #E50914;
     justify-content: center;
     align-items: center;
     border-radius: 30px;

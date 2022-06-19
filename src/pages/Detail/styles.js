@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
     flex: 1;
-    background-color: #191a30;
+    background-color: #141414;
 `;
 
 export const Header = styled.View`
@@ -33,7 +33,7 @@ export const Banner = styled.Image`
 `;
 
 export const ButtonLink = styled.TouchableOpacity`
-    background-color: #E72F49;
+    background-color: #E50914;
     width: 63px;
     height: 63px;
     border-radius: 35px;

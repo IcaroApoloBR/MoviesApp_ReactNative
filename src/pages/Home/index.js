@@ -113,7 +113,7 @@ function Home() {
             <Header title="ReactFlix" />
             <SearchContainer>
                 <Input
-                    placeholder="Insira o nome de um Filme"
+                    placeholder="Buscar o nome de um filme"
                     placeholderTextColor="#DDD"
                     value={input}
                     onChangeText={(text) => setInput(text)}

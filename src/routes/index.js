@@ -19,7 +19,7 @@ function Routes() {
                     paddingTop: 20,
                 },
 
-                drawerActiveBackgroundColor: '#E72F49',
+                drawerActiveBackgroundColor: '#E50914',
                 drawerActiveTintColor: '#FFF',
                 drawerInactiveTintColor: '#FFF'
             }}
