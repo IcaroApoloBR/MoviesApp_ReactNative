@@ -24,12 +24,15 @@ import Stars from 'react-native-stars';
 import Genres from '../../components/Genres';
 import ModalLink from '../../components/ModalLink';
 
+import { saveMovie, hasMovie, deleteMovie } from '../../utils/storage';
+
 function Detail() {
     const navigation = useNavigation();
     const route = useRoute();
 
     const [movie, setMovie] = useState({});
     const [openLink, setOpenLink] = useState(false);
+    const [favoritedMovie, setFavoritedMovie] = useState(false);
 
     useEffect(() => {
         let isActive = true;
@@ -47,6 +50,9 @@ function Detail() {
 
             if (isActive) {
                 setMovie(response.data);
+
+                const isFavorite = await hasMovie(response.data)
+                setFavoritedMovie(isFavorite);
                 // console.log(response.data);
             }
         }
@@ -61,6 +67,19 @@ function Detail() {
 
     }, [])
 
+    async function handleFavoriteMovie(movie) {
+
+        if (favoritedMovie) {
+            await deleteMovie(movie.id);
+            setFavoritedMovie(false);
+            alert('Movie has been removed from your list')
+        } else {
+            await saveMovie('@reactflix', movie)
+            setFavoritedMovie(true);
+            alert('Movie saved successfully to your list')
+        }
+    }
+
     return (
         <Container>
             <Header>
@@ -72,12 +91,20 @@ function Detail() {
                     />
                 </HeaderButton>
 
-                <HeaderButton>
-                    <Ionicons
-                        name="bookmark"
-                        size={28}
-                        color="#FFF"
-                    />
+                <HeaderButton onPress={() => handleFavoriteMovie(movie)}>
+                    {favoritedMovie ? (
+                        <Ionicons
+                            name="bookmark"
+                            size={28}
+                            color="#FFF"
+                        />
+                    ) : (
+                        <Ionicons
+                            name="bookmark-outline"
+                            size={28}
+                            color="#FFF"
+                        />
+                    )}
                 </HeaderButton>
             </Header>
 
